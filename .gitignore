@@ -1,0 +1,10 @@
+model.pkl
+TfidVectorizer.pkl
+MyOwnProcessedData.csv
+Project Definition Document.pdf
+lemmatized.csv
+base_data.csv
+dataset/
+__pycache__/
+.idea/
+.DS_Store
