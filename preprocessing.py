@@ -1,7 +1,11 @@
+import time
+
+
+import contractions
 import pandas as pd
 import re
 
-from nltk import PorterStemmer
+from nltk import PorterStemmer, pos_tag
 from nltk.corpus import stopwords, wordnet
 
 from nltk.tokenize import word_tokenize
@@ -9,8 +13,8 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from autocorrect import Speller
 
-df = pd.read_csv('more_datasets/training.csv')
-
+df = pd.read_csv('./base_data.csv')
+df = df.dropna()
 spell = Speller(fast=True)
 def negation_handler(sentence):
     temp = int(0)
@@ -48,18 +52,22 @@ def handle_negation(sentence):
 
 def preprocess(text):
     # Lowercase the text
-    text = text.lower()
-
-    text = re.sub('https?://\S+|www\.\S+', '', text)  # Remove URls
+    try:
+        text = text.lower()
+    except:
+        print("ERROR")
+    text = contractions.fix(text)
+    text = re.sub('https?://\S+|www\.\S+', '', text)  # Remove urls
+    text = re.sub('[^a-z0-9\s]', '', text)  # Remove punctuation
     text = re.sub('\n', ' ', text)  # Remove new lines
 
-    lemmatizer = WordNetLemmatizer()
+    lemmatizer = PorterStemmer()
 
     # Tokenize the text
     tokens = word_tokenize(text)
 
     # Perform lemmatisation
-    lemmatized_words = [lemmatizer.lemmatize(token) for token in tokens]
+    lemmatized_words = [lemmatizer.stem(token) for token in tokens]
 
     # Negation handling
     lemmatized_words = negation_handler(lemmatized_words)
@@ -73,8 +81,10 @@ def preprocess(text):
 
 # Apply the function to our dataframe
 def process():
+    start = time.time()
     print("Before: ", df['reviewText'][0])
     df['reviewText'] = df['reviewText'].apply(preprocess)
     print("After: ", df['reviewText'][0])
+    print(time.time() - start)
     df.to_csv('lemmatized_negation.csv', sep=',', header=True, index=False)
 process()
