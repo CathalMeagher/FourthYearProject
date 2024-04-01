@@ -20,19 +20,18 @@ df = pd.DataFrame(productReviews)
 df = df[['reviewText', 'overall']]
 
 # Drop any reviews with null values
-df = df.dropna()
+df = df.dropna(subset=["reviewText"])
 overallCounts = {}
 # Calculate how many 5,4,3,2,1 star reviews we have
 for i in range(1, 6):
     size = len(df.query('overall == ' + str(i)).index)
     overallCounts[str(i) + "*"] = size;
-
+print(overallCounts)
 # Plot number of reviews from each category
 fig, ax = plt.subplots()
 plt.title("Proportion of Reviews by Overall Rating Before Selection")
 ax.pie(overallCounts.values(), labels=overallCounts.keys(), autopct='%1.1f%%')
 plt.show()
-
 # Take the first 5000 of each star rating to give a uniform distribution of items
 sortedProductReviews = []
 for i in range(1, 6):

@@ -13,12 +13,13 @@ from bertopic import BERTopic
 from umap import UMAP
 
 
-df = pd.read_csv('./more_datasets/topics.csv', header=0,
+df = pd.read_csv('../more_datasets/topics.csv', header=0,
                  names=['na1', 'na2', 'na3', 'na4', 'na5', 'na6', 'score', 'na7', 'summary', 'text'])
 df = df.drop(['na1', 'na2', 'na3', 'na4', 'na5', 'na6', 'score', 'na7'], axis=1)
 
 docs = df['text']
-vectorizer_model = CountVectorizer(stop_words="english")
+vectorizer_model = CountVectorizer(analyzer="word",stop_words="english", ngram_range=(1, 2))
+
 
 model_embedding = SentenceTransformer('all-MiniLM-L6-v2')
 corpus_embeddings = model_embedding.encode(docs)
@@ -31,7 +32,5 @@ model = BERTopic(
 
 topics, probabilities = model.transform(docs, corpus_embeddings)
 
-new_topics = model.reduce_outliers(docs, topics, strategy="c-tf-idf")
-model.update_topics(docs, topics=new_topics, vectorizer_model=vectorizer_model)
 model.visualize_topics().show()
 model.visualize_barchart().show()

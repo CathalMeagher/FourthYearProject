@@ -12,8 +12,8 @@ from hdbscan import HDBSCAN
 key = os.environ["CHATGPT_KEY"]
 client = openai.Client(api_key=key)
 
-data = pd.read_csv('./more_datasets/topics.csv', header=0,
-                 names=['na1', 'na2', 'na3', 'na4', 'na5', 'na6', 'score', 'na7', 'summary', 'text'])
+data = pd.read_csv('../more_datasets/topics.csv', header=0,
+                   names=['na1', 'na2', 'na3', 'na4', 'na5', 'na6', 'score', 'na7', 'summary', 'text'])
 
 # data = data.drop(['na1','na2', 'na3', 'na4', 'na5', 'na6', 'score', 'na7'], axis=1)
 
@@ -44,7 +44,7 @@ representation_model = OpenAI(
     model="gpt-3.5-turbo",
     delay_in_seconds=2,
     chat=True,
-    nr_docs=4,
+    nr_docs=8,
     doc_length=100,
     tokenizer=tokenizer
 )
@@ -68,8 +68,8 @@ topics, probs = topic_model.fit_transform(sentences, embeddings)
 
 # Visualize topics with custom labels
 topic_model.visualize_topics().show()
-topic_model.visualize_barchart(top_n_topics=15).show()
+topic_model.visualize_barchart(top_n_topics=5, custom_labels=True).show()
 
 # Reduce outliers
 new_topics = topic_model.reduce_outliers(sentences, topics)
-print(new_topics)
+print(len(new_topics))

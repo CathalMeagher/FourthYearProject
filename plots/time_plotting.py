@@ -8,7 +8,7 @@ prediction_times = [5.644813060760498, 5.616560935974121, 5.59918212890625, 5.60
 processing_times = [95.88]
 
 # creating the dataset
-data = {'Training': mean(train_times), 'Prediction': mean(prediction_times), 'Text Pre-Processing': processing_times[0]}
+data = {'Text Pre-Processing': processing_times[0], 'Training': mean(train_times), 'Prediction': mean(prediction_times)}
 courses = list(data.keys())
 values = list(data.values())
 
