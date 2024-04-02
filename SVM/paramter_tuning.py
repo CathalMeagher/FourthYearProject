@@ -8,7 +8,7 @@ from sklearn.svm import SVC
 
 data = pd.read_csv('../lemmatized_negation.csv', names=['reviewText', 'overall', 'sentiment'])
 
-vectorizer = joblib.load("../TfidVectorizer.pkl")
+vectorizer = joblib.load("./TfidVectorizer.pkl")
 
 X = data['reviewText'].values.astype(str)
 y = data['sentiment'].values.astype(str)

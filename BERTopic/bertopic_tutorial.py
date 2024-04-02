@@ -18,8 +18,8 @@ df = pd.read_csv('../more_datasets/topics.csv', header=0,
 df = df.drop(['na1', 'na2', 'na3', 'na4', 'na5', 'na6', 'score', 'na7'], axis=1)
 
 docs = df['text']
-vectorizer_model = CountVectorizer(analyzer="word",stop_words="english", ngram_range=(1, 2))
 
+vectorizer_model = CountVectorizer(analyzer="word",stop_words="english", ngram_range=(1, 2))
 
 model_embedding = SentenceTransformer('all-MiniLM-L6-v2')
 corpus_embeddings = model_embedding.encode(docs)

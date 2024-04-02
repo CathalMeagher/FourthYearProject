@@ -30,11 +30,11 @@ vectorizer_model = CountVectorizer(stop_words="english", min_df=2, ngram_range=(
 from umap import UMAP
 
 # Reduce dimensionality and provide stochastic behaviour
-umap_model = UMAP(n_neighbors=150, metric='cosine', random_state=42)
+umap_model = UMAP(n_neighbors=15, metric='cosine', random_state=42)
 
 
 # Used to control clusters
-hdbscan_model = HDBSCAN(min_cluster_size=5, metric='euclidean', cluster_selection_method='eom', prediction_data=True, allow_single_cluster=True)
+hdbscan_model = HDBSCAN(min_cluster_size=15)
 
 # Tokenizer
 tokenizer= tiktoken.encoding_for_model("gpt-3.5-turbo")
@@ -69,7 +69,3 @@ topics, probs = topic_model.fit_transform(sentences, embeddings)
 # Visualize topics with custom labels
 topic_model.visualize_topics().show()
 topic_model.visualize_barchart(top_n_topics=5, custom_labels=True).show()
-
-# Reduce outliers
-new_topics = topic_model.reduce_outliers(sentences, topics)
-print(len(new_topics))

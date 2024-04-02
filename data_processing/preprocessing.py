@@ -93,4 +93,3 @@ def process():
     print("After: ", df['reviewText'][0])
     print(time.time() - start)
     df.to_csv('lemmatized_negation.csv', sep=',', header=True, index=False)
-process()
